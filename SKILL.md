@@ -14,10 +14,19 @@ CLI tool and library that uses GLM-4.6V-Flash (free) to convert images into text
 - Need to generate AI art prompts from reference images
 - Working with text-only models that need visual context
 
-## Installation
+## Usage
+
+### Recommended: npx (no install required)
+
+```bash
+npx vision-bridge analyze screenshot.png
+```
+
+### Or install globally
 
 ```bash
 npm install -g vision-bridge
+vision-bridge analyze screenshot.png
 ```
 
 ## Setup
@@ -33,7 +42,7 @@ Get API key: https://open.bigmodel.cn
 ### Analyze Image
 
 ```bash
-vision-bridge analyze <image> [options]
+npx vision-bridge analyze <image> [options]
 ```
 
 Options:
@@ -46,40 +55,40 @@ Options:
 Examples:
 ```bash
 # Local file
-vision-bridge analyze screenshot.png
+npx vision-bridge analyze screenshot.png
 
 # URL
-vision-bridge analyze https://example.com/image.png
+npx vision-bridge analyze https://example.com/image.png
 
 # Custom prompt
-vision-bridge analyze ui.jpg -p "List all UI components and their layout"
+npx vision-bridge analyze ui.jpg -p "List all UI components and their layout"
 
 # Stream + save
-vision-bridge analyze doc.pdf --stream -o result.txt
+npx vision-bridge analyze doc.pdf --stream -o result.txt
 ```
 
 ### OCR Mode
 
 ```bash
-vision-bridge ocr <image> [options]
+npx vision-bridge ocr <image> [options]
 ```
 
 Extracts all text from images, preserving layout. Good for documents, receipts, tables.
 
 ```bash
-vision-bridge ocr receipt.jpg -o receipt.md
+npx vision-bridge ocr receipt.jpg -o receipt.md
 ```
 
 ### Image2Prompt
 
 ```bash
-vision-bridge prompt <image> [options]
+npx vision-bridge prompt <image> [options]
 ```
 
 Generates AI art prompts from reference images.
 
 ```bash
-vision-bridge prompt artwork.jpg
+npx vision-bridge prompt artwork.jpg
 ```
 
 ## Library Usage
