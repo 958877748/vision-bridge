@@ -1,6 +1,6 @@
 {
   "name": "vision-bridge",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Use GLM-4.6V-Flash to convert images to text for non-vision AI models",
   "main": "dist/index.js",
   "bin": {
