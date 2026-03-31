@@ -3,17 +3,6 @@
 import { Command } from "commander";
 import { VisionBridge } from "./index.js";
 
-function getApiKey(cliKey: string | undefined): string {
-  const key = cliKey || process.env.ZHIPUAI_API_KEY;
-  if (!key) {
-    console.error(
-      "Error: API key required. Set ZHIPUAI_API_KEY env var or use --api-key flag.",
-    );
-    process.exit(1);
-  }
-  return key;
-}
-
 async function runAnalysis(
   bridge: VisionBridge,
   image: string,
@@ -66,16 +55,32 @@ program
   .option("-s, --stream", "Stream output")
   .option("-o, --output <file>", "Save result to file")
   .action(async (image, opts) => {
-    const apiKey = getApiKey(opts.apiKey);
-    const bridge = new VisionBridge({ apiKey, thinking: opts.thinking });
-    await runAnalysis(
-      bridge,
-      image,
-      opts.prompt,
-      opts.thinking,
-      opts.stream,
-      opts.output,
-    );
+    const bridge = new VisionBridge({
+      apiKey: opts.apiKey,
+      thinking: opts.thinking,
+    });
+    try {
+      await runAnalysis(
+        bridge,
+        image,
+        opts.prompt,
+        opts.thinking,
+        opts.stream,
+        opts.output,
+      );
+    } catch (err: unknown) {
+      if (
+        err instanceof Error &&
+        (err.message.includes("401") || err.message.includes("api_key"))
+      ) {
+        console.error(
+          "Error: API key required. Set ZHIPUAI_API_KEY environment variable.",
+        );
+      } else {
+        console.error(`Error: ${err instanceof Error ? err.message : err}`);
+      }
+      process.exit(1);
+    }
   });
 
 program
@@ -86,15 +91,31 @@ program
   .option("-t, --thinking", "Enable thinking mode")
   .option("-o, --output <file>", "Save result to file")
   .action(async (image, opts) => {
-    const apiKey = getApiKey(opts.apiKey);
-    const bridge = new VisionBridge({ apiKey, thinking: opts.thinking });
-    const result = await bridge.ocr(image, opts.thinking);
-    console.log(result);
+    const bridge = new VisionBridge({
+      apiKey: opts.apiKey,
+      thinking: opts.thinking,
+    });
+    try {
+      const result = await bridge.ocr(image, opts.thinking);
+      console.log(result);
 
-    if (opts.output) {
-      const fs = await import("fs/promises");
-      await fs.writeFile(opts.output, result, "utf-8");
-      console.error(`Result saved to ${opts.output}`);
+      if (opts.output) {
+        const fs = await import("fs/promises");
+        await fs.writeFile(opts.output, result, "utf-8");
+        console.error(`Result saved to ${opts.output}`);
+      }
+    } catch (err: unknown) {
+      if (
+        err instanceof Error &&
+        (err.message.includes("401") || err.message.includes("api_key"))
+      ) {
+        console.error(
+          "Error: API key required. Set ZHIPUAI_API_KEY environment variable.",
+        );
+      } else {
+        console.error(`Error: ${err instanceof Error ? err.message : err}`);
+      }
+      process.exit(1);
     }
   });
 
@@ -105,15 +126,28 @@ program
   .option("-k, --api-key <key>", "ZhipuAI API key (or set ZHIPUAI_API_KEY)")
   .option("-o, --output <file>", "Save result to file")
   .action(async (image, opts) => {
-    const apiKey = getApiKey(opts.apiKey);
-    const bridge = new VisionBridge({ apiKey });
-    const result = await bridge.image2prompt(image);
-    console.log(result);
+    const bridge = new VisionBridge({ apiKey: opts.apiKey });
+    try {
+      const result = await bridge.image2prompt(image);
+      console.log(result);
 
-    if (opts.output) {
-      const fs = await import("fs/promises");
-      await fs.writeFile(opts.output, result, "utf-8");
-      console.error(`Result saved to ${opts.output}`);
+      if (opts.output) {
+        const fs = await import("fs/promises");
+        await fs.writeFile(opts.output, result, "utf-8");
+        console.error(`Result saved to ${opts.output}`);
+      }
+    } catch (err: unknown) {
+      if (
+        err instanceof Error &&
+        (err.message.includes("401") || err.message.includes("api_key"))
+      ) {
+        console.error(
+          "Error: API key required. Set ZHIPUAI_API_KEY environment variable.",
+        );
+      } else {
+        console.error(`Error: ${err instanceof Error ? err.message : err}`);
+      }
+      process.exit(1);
     }
   });
 

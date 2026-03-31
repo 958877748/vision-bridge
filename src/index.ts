@@ -13,7 +13,7 @@ const IMG2PROMPT =
   "请分析这张图片的视觉风格、构图、光影、色彩、主题等元素，生成一段高质量的 AI 绘画提示词，可以用于生成类似风格的图片。";
 
 export interface VisionBridgeOptions {
-  apiKey: string;
+  apiKey?: string;
   thinking?: boolean;
 }
 
@@ -49,9 +49,9 @@ async function fileToBase64DataUrl(filePath: string): Promise<string> {
 export class VisionBridge {
   private client: OpenAI;
 
-  constructor(options: VisionBridgeOptions) {
+  constructor(options: VisionBridgeOptions = {}) {
     this.client = new OpenAI({
-      apiKey: options.apiKey,
+      apiKey: options.apiKey || "dummy",
       baseURL: "https://open.bigmodel.cn/api/paas/v4/",
     });
   }
