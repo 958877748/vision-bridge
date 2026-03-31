@@ -1,0 +1,37 @@
+{
+  "name": "vision-bridge",
+  "version": "0.1.0",
+  "description": "Use GLM-4.6V-Flash to convert images to text for non-vision AI models",
+  "main": "dist/index.js",
+  "bin": {
+    "vision-bridge": "dist/cli.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "vision",
+    "image-to-text",
+    "glm",
+    "ai",
+    "llm",
+    "cli"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "openai": "^4.76.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
